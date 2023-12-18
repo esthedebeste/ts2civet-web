@@ -1,59 +1,33 @@
 <script lang="ts">
+	import { browser } from "$app/environment"
 	import { replaceState } from "$app/navigation"
+	import { page } from "$app/stores"
 	import { fromBase64Url, toBase64Url } from "$lib/base64url"
 	import { javascript } from "@codemirror/lang-javascript"
 	import { oneDark } from "@codemirror/theme-one-dark"
-	import { untrack } from "svelte"
 	import CodeMirror from "svelte-codemirror-editor"
 	import { transform } from "ts2civet"
 
-	let addNewLines = $state(true)
-
-	function initial() {
-		if (location.hash) {
-			const hash = location.hash.slice(1)
-			return fromBase64Url(hash)
-		} else
-			return `\
+	const DEFAULT = `\
 function add(a: number, b: number): number {
 	return a + b;
 }`
+
+	function initial() {
+		if (browser && $page.url.searchParams.has("code")) {
+			const search = $page.url.searchParams.get("code")!
+			return fromBase64Url(search)
+		} else return DEFAULT
 	}
 
-	let typescript = $state(`\
-function add(a: number, b: number): number {
-	return a + b;
-}`)
+	let typescript = $state(initial())
 	$effect(() => {
-		typescript = initial()
-	})
-
-	$effect.pre(() => {
-		const dontAddNewlinesQuery = matchMedia("(max-width: 768px)")
-		function onchange() {
-			untrack(() => (addNewLines = !dontAddNewlinesQuery.matches))
-		}
-		dontAddNewlinesQuery.addEventListener("change", onchange)
-		onchange()
-		return () => {
-			dontAddNewlinesQuery.removeEventListener("change", onchange)
-		}
-	})
-	$effect(() => {
-		const hash = toBase64Url(typescript)
-		location.hash = hash
-		replaceState("#" + hash, "")
+		const search = toBase64Url(typescript)
+		replaceState("?code=" + search, {})
 	})
 	function transforms(code: string) {
 		try {
-			const transformed = transform(code, "hi.tsx", { header: false }).trim()
-			if (addNewLines) {
-				const newlines = code.split("\n").length
-				// add newlines to the end of the transformed code to match the number of newlines in the original code
-				const newlinesToAdd = newlines - transformed.split("\n").length
-				if (newlinesToAdd < 0) return transformed
-				return transformed + "\n".repeat(newlinesToAdd)
-			} else return transformed
+			return transform(code, "hi.tsx", { header: false }).trim()
 		} catch (error) {
 			return String(error)
 		}
@@ -108,7 +82,6 @@ function add(a: number, b: number): number {
 	main {
 		display: flex;
 		flex-direction: row;
-		align-items: center;
 		justify-content: space-between;
 		height: 100%;
 		margin: 0 auto;
