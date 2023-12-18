@@ -20,7 +20,14 @@ function add(a: number, b: number): number {
 }`
 	}
 
-	let typescript = $state(initial())
+	let typescript = $state(`\
+function add(a: number, b: number): number {
+	return a + b;
+}`)
+	$effect(() => {
+		typescript = initial()
+	})
+
 	$effect.pre(() => {
 		const dontAddNewlinesQuery = matchMedia("(max-width: 768px)")
 		function onchange() {
