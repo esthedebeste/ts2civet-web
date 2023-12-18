@@ -20,9 +20,7 @@ function add(a: number, b: number): number {
 }`
 	}
 
-	let typescript = $state(`function add(a: number, b: number): number {
-    return a + b;
-}`)
+	let typescript = $state(initial())
 	$effect.pre(() => {
 		const dontAddNewlinesQuery = matchMedia("(max-width: 768px)")
 		function onchange() {
