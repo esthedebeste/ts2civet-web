@@ -9,8 +9,17 @@
 	import { transform } from "ts2civet"
 
 	const DEFAULT = `\
-function add(a: number, b: number): number {
-	return a + b;
+class Double {
+  private double: number
+  constructor(number = 0) {
+    this.double = number
+  }
+  add(b: Double | number): Double {
+    if(typeof b === "number")
+      return new Double(this.double + b)
+    else
+      return new Double(this.double + b.double)
+  }
 }`
 
 	function initial() {
