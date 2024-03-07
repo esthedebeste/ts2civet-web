@@ -39,8 +39,8 @@ devDependencies:
     specifier: ^1.2.0
     version: 1.2.0(codemirror@6.0.1)(svelte@5.0.0-next.1)
   ts2civet:
-    specifier: 1.0.0-beta.9
-    version: 1.0.0-beta.9
+    specifier: 1.0.0-beta.10
+    version: 1.0.0-beta.10
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
@@ -1487,8 +1487,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /ts2civet@1.0.0-beta.9:
-    resolution: {integrity: sha512-vSyKenV9Oq91T43j4edyfx4uvK1lriqz8kTazk6C4zXVoNHqXgz1xAhqvFQhegCXAIX0IIlHcbgo3GMwEJtDow==}
+  /ts2civet@1.0.0-beta.10:
+    resolution: {integrity: sha512-F/AVfA3tds8I3GUhkT73G0N5pdjWvDTiZ5u4xzie6qnjie2Il7FabdBN94kpEoP36VxUNQfbRTAkqJrjcapKKQ==}
     hasBin: true
     dependencies:
       code-block-writer: 12.0.0
