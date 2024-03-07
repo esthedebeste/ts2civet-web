@@ -31,8 +31,11 @@ class Double {
 
 	let typescript = $state(initial())
 	$effect(() => {
-		const search = toBase64Url(typescript)
-		replaceState("?code=" + search, {})
+		if (typescript.trim() === DEFAULT) replaceState(new URL("/", location.href), {})
+		else {
+			const search = toBase64Url(typescript)
+			replaceState("?code=" + search, {})
+		}
 	})
 	function transforms(code: string) {
 		try {
